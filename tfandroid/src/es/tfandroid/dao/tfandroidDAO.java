@@ -6,6 +6,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import es.tfandroid.beans.Download;
 import es.tfandroid.beans.News;
 
@@ -16,8 +20,10 @@ public class tfandroidDAO {
 		ArrayList listaNoticias=null;
 		Connection conn =null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn= DriverManager.getConnection("jdbc:mysql://srv64.hosting24.com:3306/datatecn_tfandroid","datatecn_tfandro","tfandroid");
+			Context initialContext = new InitialContext();
+			Context ctx=(Context)initialContext.lookup("java:comp/env");
+			DataSource ds= (DataSource)(ctx.lookup("jdbc/tfandroid"));
+            conn = ds.getConnection();
 			CallableStatement calstm=conn.prepareCall("select idnoticia,titulo,fecha,descripcion,urlimagen,idioma,visible from noticias where idioma= ? and visible=1 order by fecha desc ");
 			calstm.setString(1, idioma);
 			ResultSet set=calstm.executeQuery();
@@ -47,9 +53,10 @@ public class tfandroidDAO {
 		ArrayList listaNoticias=null;
 		Connection conn =null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn= DriverManager.getConnection("jdbc:mysql://srv64.hosting24.com:3306/datatecn_tfandroid","datatecn_tfandro","tfandroid");
-			CallableStatement calstm=conn.prepareCall("select idnoticia,titulo,fecha,descripcion,urlimagen,idioma,visible from noticias where idioma= ? and visible=1 order by fecha desc ");
+			Context initialContext = new InitialContext();
+			Context ctx=(Context)initialContext.lookup("java:comp/env");
+            conn = ((DataSource)(ctx.lookup("jdbc/tfandroid"))).getConnection();
+            CallableStatement calstm=conn.prepareCall("select idnoticia,titulo,fecha,descripcion,urlimagen,idioma,visible from noticias where idioma= ? and visible=1 order by fecha desc ");
 			calstm.setString(1, idioma);
 			ResultSet set=calstm.executeQuery();
 			listaNoticias=new ArrayList();
@@ -74,9 +81,10 @@ public class tfandroidDAO {
 		ArrayList listaDescargas=null;
 		Connection conn =null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn= DriverManager.getConnection("jdbc:mysql://srv64.hosting24.com:3306/datatecn_tfandroid","datatecn_tfandro","tfandroid");
-			CallableStatement calstm=conn.prepareCall("select iddownload,idmarca,idmodelo,fecha,titulo,descripcion,urlimagen,idioma,visible from downloads where idioma= ? and modelo= ? and marca = ?and visible=1 order by fecha desc ");
+			Context initialContext = new InitialContext();
+			Context ctx=(Context)initialContext.lookup("java:comp/env");
+            conn = ((DataSource)(ctx.lookup("jdbc/tfandroid"))).getConnection();
+            CallableStatement calstm=conn.prepareCall("select iddownload,idmarca,idmodelo,fecha,titulo,descripcion,urlimagen,idioma,visible from downloads where idioma= ? and modelo= ? and marca = ?and visible=1 order by fecha desc ");
 			calstm.setString(1, idioma);
 			calstm.setInt(2,modelo);
 			calstm.setInt(3,marca);

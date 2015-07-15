@@ -1,25 +1,29 @@
 <%
 if(session.getAttribute("admin")!=null){
 %>
-Crear descarga</br>
-<form>
-Nombre:<input type="text" name="nombre"/></br>
-<input type="submit"/></br>
-</form>
+
 </hr>
 Crear Marca</br>
-<form>
+<form action="AdminServlet" method="post">
+<input type="hidden" name="action" value="1"/>
 Nombre:<input type="text" name="nombre"/></br>
 <input type="submit"/></br>
 </form>
 </hr>
 Crear Modelo</br>
-<form>	
+<form action="AdminServlet" method="post">
+<input type="hidden" name="action" value="2"/>
 <input type="text" name="marca"/></br>
 Nombre:<input type="text" name="nombre"/></br>
 <input type="submit"/></br>
 </form>
 </hr>
+Crear descarga</br>
+<form action="AdminServlet" method="post">
+<input type="hidden" name="action" value="3"/>
+Nombre:<input type="text" name="nombre"/></br>
+<input type="submit"/></br>
+</form>
 <%	
 }
 %>
