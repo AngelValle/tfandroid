@@ -6,7 +6,7 @@
 <center>
 <div id="noticiaDetails">
 <%Download download=(Download)reqHelper.getDescargaActual();%>
-<%=download.getDescipcion() %>
+<%=download.getDescripcion() %>
 </div>
 </center>
 </div>

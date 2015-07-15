@@ -3,7 +3,7 @@
 <div id="contentwrapper">
 <div id="contentcolumn2cols">
 <div class="innertube">
-<b>NOTICIAS:</b></br></br></br>
+<b><%=RB.getString("menu.news") %>:</b></br></br></br>
 <%for (int x=0;x<reqHelper.getListaNewsCortas().size();x++){
 	News noticia=(News)reqHelper.getListaNewsCortas().get(x);	
 %>

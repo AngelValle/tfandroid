@@ -61,26 +61,30 @@ public class ControlServlet extends HttpServlet {
 				reqHelper=new RequestHelper();
 			}
 			reqHelper.tratarRequest(request);
-			tfandroidDAO tDao=null;
+			tfandroidDAO tDao=new tfandroidDAO();
 			switch(reqHelper.getAction()){
 			case 0:
-				tDao=new tfandroidDAO();
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
-				reqHelper.setJsp("index.jsp");
+				reqHelper.setJsp("promotions.jsp");
 				break;
 			case 1:
-				tDao=new tfandroidDAO();
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("about.jsp");
 				break;
 			case 2:
-				tDao=new tfandroidDAO();
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("company.jsp");
 				break;
 			case 3:
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				if(reqHelper.getDetalle()!=-1){
-					tDao=new tfandroidDAO();
 					reqHelper.setListaNews(tDao.consultaNoticias(reqHelper.getLang()));
 					for(int x =0;x<reqHelper.getListaNews().size();x++){
 						News n=(News)reqHelper.getListaNews().get(x);
@@ -91,31 +95,27 @@ public class ControlServlet extends HttpServlet {
 					}
 					reqHelper.setJsp("newsDetails.jsp");
 				}else{
-					tDao=new tfandroidDAO();
 					reqHelper.setListaNewsCortas(tDao.consultaNoticias(reqHelper.getLang()));
 					reqHelper.setJsp("news.jsp");
 				}
 				break;
 			case 4:
-				tDao=new tfandroidDAO();
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
-				
-				
-				if(reqHelper.getDetalle()!=-1 && reqHelper.getSubDetalle()!=-1){
-					tDao=new tfandroidDAO();
+				if(reqHelper.getDetalle()!=-1 && reqHelper.getSubDetalle()!=-1 && reqHelper.getDownloadId()!=-1){
 					reqHelper.setListaDescargas(tDao.consultaDescargas(reqHelper.getLang(),reqHelper.getDetalle(),reqHelper.getSubDetalle()));
 					for(int x =0;x<reqHelper.getListaDescargas().size();x++){
 						Download n=(Download)reqHelper.getListaDescargas().get(x);
-						/*if(reqHelper.getDetalle()==n.getId() && reqHelper.getLang().equals(n.getIdioma())){
+						if(reqHelper.getDownloadId()==n.getIddescarga() && reqHelper.getLang().equals(n.getIdioma())){
 							reqHelper.setDescargaActual(n);
 							break;
-						}*/
+						}
 					}
 					reqHelper.setJsp("downloadsDetails.jsp");
 				}else{
-					tDao=new tfandroidDAO();
 					reqHelper.setListaNewsCortas(tDao.consultaNoticias(reqHelper.getLang()));
-					//reqHelper.setListaDescargas(tDao.consultaDescargas(reqHelper.getLang()));
+					reqHelper.setListaDescargas(tDao.consultaDescargas(reqHelper.getLang(),reqHelper.getDetalle(),reqHelper.getSubDetalle()));
 					reqHelper.setJsp("downloads.jsp");
 				}
 				break;
@@ -123,18 +123,26 @@ public class ControlServlet extends HttpServlet {
 				reqHelper.setJsp("forum.jsp");
 				break;
 			case 6:
-				tDao=new tfandroidDAO();
-				ArrayList listaNewsCortas=tDao.consultaNoticiasCortas(reqHelper.getLang());
-				reqHelper.setListaNewsCortas(listaNewsCortas);
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
+				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("staff.jsp");
 				break;
 			case 7:
-				tDao=new tfandroidDAO();
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("contact.jsp");
 				break;
+			case 8:
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
+				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
+				reqHelper.setJsp("reviews.jsp");
+				break;
 			case 20:
-				tDao=new tfandroidDAO();
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("search.jsp");
 				break;
