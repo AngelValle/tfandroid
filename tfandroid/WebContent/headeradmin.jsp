@@ -31,7 +31,7 @@ ResourceBundle RB = ResourceBundle.getBundle("texts", new Locale(reqHelper.getLa
 		<a href="AdminServlet?language=es" ><img src="images/EspanaBanderaIcono.png" width="40px"/></a><a href="AdminServlet?language=en"><img src="images/ReinoUnidoBanderaIcono.png" width="40px"/></a>          
 		<input type="hidden" name="action" value="20"/>
 			<%=RB.getString("home.search") %> <input type="text" name="textSearch" size="30"/>  
-			<a href="http://www.facebook.com/" target="_blank"><img src="images/facebook.jpg" width="40px"/></a><a href="" target="_blank"><img src="images/twiter.jpg" width="40px"/></a><a href="" target="_blank"><img src="images/googleplus.jpg" width="40px"/></a>
+			<a href="http://www.facebook.com/TFAndroidDevelopers" target="_blank"><img src="images/facebook.jpg" width="40px"/></a><a href="http://twitter.com/TFADevelopers" target="_blank"><img src="images/twiter.jpg" width="40px"/></a><a href="http://plus.google.com/103304683630993709928" target="_blank"><img src="images/googleplus.jpg" width="40px"/></a>
 		</form> 
 	</div>
 
