@@ -17,6 +17,7 @@ int subDetalle=-1;
 int downloadId=-1;
 News noticiaActual=null;
 Download descargaActual=null;
+String txtSearch=null;
 ArrayList listaDescargas=null;
 ArrayList listaNews=null;
 ArrayList listaNewsCortas=null;
@@ -72,8 +73,21 @@ public void tratarRequest(HttpServletRequest request) {
 	}else{
 		setDownloadId(-1);
 	}
+	if(request.getParameter("textSearch")!=null){
+		String auxAct=(String)request.getParameter("textSearch");
+		setTxtSearch(("%"+auxAct+"%").replaceAll(" ", "%"));
+	}else{
+		setTxtSearch(null);
+	}
+	
 }
 
+public String getTxtSearch() {
+	return txtSearch;
+}
+public void setTxtSearch(String txtSearch) {
+	this.txtSearch = txtSearch;
+}
 public int getDownloadId() {
 	return downloadId;
 }

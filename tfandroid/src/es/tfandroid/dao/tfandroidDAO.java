@@ -116,11 +116,11 @@ public class tfandroidDAO {
 			Context ctx=(Context)initialContext.lookup("java:comp/env");
 			DataSource ds= (DataSource)(ctx.lookup("jdbc/tfandroid"));
             conn = ds.getConnection();
-			CallableStatement calstm=conn.prepareCall("select idmarca,titulo,visible from marca order by idmarca asc ");
+			CallableStatement calstm=conn.prepareCall("select idmarca,titulo,urlimagen,visible from marca where visible=1 order by idmarca asc ");
 			ResultSet set=calstm.executeQuery();
 			listaMarcas=new ArrayList();
 			while(set.next()){
-				Marca marca=new Marca(set.getInt(1),set.getString(2),set.getBoolean(3));
+				Marca marca=new Marca(set.getInt(1),set.getString(2),set.getString(3),set.getBoolean(4));
 				listaMarcas.add(marca);
 			}
 			conn.close();
@@ -143,12 +143,12 @@ public class tfandroidDAO {
 			Context ctx=(Context)initialContext.lookup("java:comp/env");
 			DataSource ds= (DataSource)(ctx.lookup("jdbc/tfandroid"));
             conn = ds.getConnection();
-			CallableStatement calstm=conn.prepareCall("select idmodelo,idmarca,titulo,visible from modelo order by idmodelo asc ");
+			CallableStatement calstm=conn.prepareCall("select idmodelo,idmarca,titulo,urlimagen,visible from modelo where visible=1 order by idmodelo asc ");
 			ResultSet set=calstm.executeQuery();
 			listaModelos=new ArrayList();
 			int cont=0;
 			while(set.next()){
-				Modelo modelo=new Modelo(set.getInt(1),set.getInt(2),set.getString(3),set.getBoolean(4));
+				Modelo modelo=new Modelo(set.getInt(1),set.getInt(2),set.getString(3),set.getString(4),set.getBoolean(5));
 				listaModelos.add(modelo);
 				cont++;
 				if(cont==4){
@@ -167,5 +167,99 @@ public class tfandroidDAO {
 		}
 		return listaModelos;
 	}
-
+	public ArrayList consultaModelosMarca(int idmarca){
+		ArrayList listaModelos=null;
+		Connection conn =null;
+		try {
+			Context initialContext = new InitialContext();
+			Context ctx=(Context)initialContext.lookup("java:comp/env");
+			DataSource ds= (DataSource)(ctx.lookup("jdbc/tfandroid"));
+            conn = ds.getConnection();
+			CallableStatement calstm=conn.prepareCall("select idmodelo,idmarca,titulo,urlimagen,visible from modelo where idmarca = ? and visible=1 order by idmodelo asc ");
+			calstm.setInt(1, idmarca);
+			ResultSet set=calstm.executeQuery();
+			listaModelos=new ArrayList();
+			int cont=0;
+			while(set.next()){
+				Modelo modelo=new Modelo(set.getInt(1),set.getInt(2),set.getString(3),set.getString(4),set.getBoolean(5));
+				listaModelos.add(modelo);
+				cont++;
+				if(cont==4){
+					break;
+				}
+			}
+			conn.close();
+		} catch (Exception e) {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return listaModelos;
+	}
+	public ArrayList buscarEnWebDescargas(String texto,String idioma){
+		ArrayList listaDescargas=null;
+		Connection conn =null;
+		try {
+			Context initialContext = new InitialContext();
+			Context ctx=(Context)initialContext.lookup("java:comp/env");
+			DataSource ds= (DataSource)(ctx.lookup("jdbc/tfandroid"));
+            conn = ds.getConnection();
+            conn = ((DataSource)(ctx.lookup("jdbc/tfandroid"))).getConnection();
+            CallableStatement calstm=conn.prepareCall("select iddownload,idmarca,idmodelo,fecha,titulo,descripcion,urlimagen,idioma,visible from downloads where idioma= ? and visible=1 and (titulo like ? or descripcion like ?) order by fecha desc ");
+			calstm.setString(1, idioma);
+			calstm.setString(2,texto);
+			calstm.setString(3,texto);
+			ResultSet set=calstm.executeQuery();
+			listaDescargas=new ArrayList();
+			while(set.next()){
+				Download descarga=new Download(set.getInt(1),set.getInt(2),set.getInt(3),set.getTimestamp(4),set.getString(5),set.getString(6),set.getString(7),set.getString(8),set.getBoolean(9));
+				listaDescargas.add(descarga);
+			}
+			conn.close();
+		} catch (Exception e) {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return listaDescargas;
+	}
+	public ArrayList buscarEnWebNoticias(String texto,String idioma){
+		ArrayList listaNews=null;
+		Connection conn =null;
+		try {
+			Context initialContext = new InitialContext();
+			Context ctx=(Context)initialContext.lookup("java:comp/env");
+			DataSource ds= (DataSource)(ctx.lookup("jdbc/tfandroid"));
+            conn = ds.getConnection();
+            conn = ((DataSource)(ctx.lookup("jdbc/tfandroid"))).getConnection();
+            CallableStatement calstm=conn.prepareCall("select idnoticia,titulo,fecha,descripcion,urlimagen,idioma,visible from noticias where idioma= ? and visible=1 and (titulo like ? or descripcion like ?) order by fecha desc ");
+			calstm.setString(1, idioma);
+			calstm.setString(2,texto);
+			calstm.setString(3,texto);
+			ResultSet set=calstm.executeQuery();
+			listaNews=new ArrayList();
+			while(set.next()){
+				News noticia=new News(set.getInt(1),set.getString(2),set.getTimestamp(3),set.getString(4),set.getString(5),set.getString(6),set.getBoolean(7));
+				listaNews.add(noticia);
+			}
+			conn.close();
+		} catch (Exception e) {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+		return listaNews;
+	}
 }

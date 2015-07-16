@@ -55,10 +55,16 @@ margin-right: -480px;
 margin-top: 160px;
 }
 
+#languagesearchsocial{
+float: right;
+margin-right: -480px;
+margin-top: 150px;
+}
+
 #banner{
 float: right;
 margin-top:20px;
-margin-right: 100px;
+margin-right: 150px;
 }
 
 #language{

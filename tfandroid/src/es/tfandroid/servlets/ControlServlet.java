@@ -64,26 +64,22 @@ public class ControlServlet extends HttpServlet {
 			tfandroidDAO tDao=new tfandroidDAO();
 			switch(reqHelper.getAction()){
 			case 0:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("promotions.jsp");
 				break;
 			case 1:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("about.jsp");
 				break;
 			case 2:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("company.jsp");
 				break;
 			case 3:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+
 				if(reqHelper.getDetalle()!=-1){
 					reqHelper.setListaNews(tDao.consultaNoticias(reqHelper.getLang()));
 					for(int x =0;x<reqHelper.getListaNews().size();x++){
@@ -100,10 +96,18 @@ public class ControlServlet extends HttpServlet {
 				}
 				break;
 			case 4:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
-				if(reqHelper.getDetalle()!=-1 && reqHelper.getSubDetalle()!=-1 && reqHelper.getDownloadId()!=-1){
+				if(reqHelper.getDetalle()==-1 && reqHelper.getSubDetalle()==-1 && reqHelper.getDownloadId()==-1){
+				reqHelper.setListaMarcas(tDao.consultaMarcas());
+				reqHelper.setJsp("downloadsMarcas.jsp");
+				}else if(reqHelper.getDetalle()!=-1 && reqHelper.getSubDetalle()==-1 && reqHelper.getDownloadId()==-1){
+					reqHelper.setListaModelos(tDao.consultaModelosMarca(reqHelper.getDetalle()));
+					reqHelper.setJsp("downloadsModelos.jsp");
+				}else if(reqHelper.getDetalle()!=-1 && reqHelper.getSubDetalle()!=-1 && reqHelper.getDownloadId()==-1){
+					reqHelper.setListaNewsCortas(tDao.consultaNoticias(reqHelper.getLang()));
+					reqHelper.setListaDescargas(tDao.consultaDescargas(reqHelper.getLang(),reqHelper.getDetalle(),reqHelper.getSubDetalle()));
+					reqHelper.setJsp("downloads.jsp");
+				}else if(reqHelper.getDetalle()!=-1 && reqHelper.getSubDetalle()!=-1 && reqHelper.getDownloadId()!=-1){
 					reqHelper.setListaDescargas(tDao.consultaDescargas(reqHelper.getLang(),reqHelper.getDetalle(),reqHelper.getSubDetalle()));
 					for(int x =0;x<reqHelper.getListaDescargas().size();x++){
 						Download n=(Download)reqHelper.getListaDescargas().get(x);
@@ -113,30 +117,23 @@ public class ControlServlet extends HttpServlet {
 						}
 					}
 					reqHelper.setJsp("downloadsDetails.jsp");
-				}else{
-					reqHelper.setListaNewsCortas(tDao.consultaNoticias(reqHelper.getLang()));
-					reqHelper.setListaDescargas(tDao.consultaDescargas(reqHelper.getLang(),reqHelper.getDetalle(),reqHelper.getSubDetalle()));
-					reqHelper.setJsp("downloads.jsp");
 				}
 				break;
 			case 5:
 				reqHelper.setJsp("forum.jsp");
 				break;
 			case 6:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("staff.jsp");
 				break;
 			case 7:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("contact.jsp");
 				break;
 			case 8:
-				reqHelper.setListaMarcas(tDao.consultaMarcas());
-				reqHelper.setListaModelos(tDao.consultaModelos());
+				
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
 				reqHelper.setJsp("reviews.jsp");
 				break;
@@ -144,7 +141,11 @@ public class ControlServlet extends HttpServlet {
 				reqHelper.setListaMarcas(tDao.consultaMarcas());
 				reqHelper.setListaModelos(tDao.consultaModelos());
 				reqHelper.setListaNewsCortas(tDao.consultaNoticiasCortas(reqHelper.getLang()));
-				reqHelper.setJsp("search.jsp");
+				if(reqHelper.getTxtSearch()!=null && !reqHelper.getTxtSearch().replaceAll("%", "").equals("")){
+					reqHelper.setListaDescargas(tDao.buscarEnWebDescargas(reqHelper.getTxtSearch(),reqHelper.getLang()));
+					reqHelper.setListaNews(tDao.buscarEnWebNoticias(reqHelper.getTxtSearch(),reqHelper.getLang()));
+					reqHelper.setJsp("search.jsp");
+				}
 				break;
 			default:
 				break;

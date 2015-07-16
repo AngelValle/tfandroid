@@ -4,14 +4,24 @@ public class Modelo {
 	int idmarca;
 	int idmodelo;
 	String titulo;
+	String urlImagen;
 	boolean visible;
 
-	public Modelo(int idmodelo,int idmarca, String titulo,boolean visible) {
+	public Modelo(int idmodelo,int idmarca, String titulo,String urlImagen,boolean visible) {
 		super();
 		this.idmodelo=idmodelo;
 		this.idmarca = idmarca;
 		this.titulo = titulo;
+		this.urlImagen=urlImagen;
 		this.visible=visible;
+	}
+
+	public String getUrlImagen() {
+		return urlImagen;
+	}
+
+	public void setUrlImagen(String urlImagen) {
+		this.urlImagen = urlImagen;
 	}
 
 	public boolean isVisible() {

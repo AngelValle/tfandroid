@@ -26,18 +26,13 @@ ResourceBundle RB = ResourceBundle.getBundle("texts", new Locale(reqHelper.getLa
 	<div id="banner">
 		<a href="" target="_blank"><img src="images/banners/d83a_jiayu-aplica9.gif" width="400px" height="90px"/>
 	</div>
-	<div id="social">
-		<a href="http://www.facebook.com/" target="_blank"><img src="images/facebook.jpg" width="40px"/></a><a href="" target="_blank"><img src="images/twiter.jpg" width="40px"/></a><a href="" target="_blank"><img src="images/googleplus.jpg" width="40px"/></a>
-	</div>
-	<div id="search">
+	<div id="languagesearchsocial">
 		<form method="post" action="ControlServlet">
-			<input type="hidden" name="action" value="20"/>
-			<%=RB.getString("home.search") %> <input type="text" name="textSearch"/>            
+		<a href="ControlServlet?language=es" ><img src="images/EspanaBanderaIcono.png" width="40px"/></a><a href="ControlServlet?language=en"><img src="images/ReinoUnidoBanderaIcono.png" width="40px"/></a>          
+		<input type="hidden" name="action" value="20"/>
+			<%=RB.getString("home.search") %> <input type="text" name="textSearch" size="30"/>  
+			<a href="http://www.facebook.com/" target="_blank"><img src="images/facebook.jpg" width="40px"/></a><a href="" target="_blank"><img src="images/twiter.jpg" width="40px"/></a><a href="" target="_blank"><img src="images/googleplus.jpg" width="40px"/></a>
 		</form> 
-	</div>
-	<div id="language">       
-		<a href="ControlServlet?language=es" ><img src="images/EspanaBanderaIcono.png" width="40px"/></a><a href="ControlServlet?language=en"><img src="images/ReinoUnidoBanderaIcono.png" width="40px"/></a>
-	   
 	</div>
 
 <br/><br/>
@@ -60,35 +55,9 @@ ResourceBundle RB = ResourceBundle.getBundle("texts", new Locale(reqHelper.getLa
       </ul>
    </li>
    <li class='<%=reqHelper.getAction()==3 ? "active " : ""%>'><a href='ControlServlet?action=3'><span><%=RB.getString("menu.news") %></span></a></li>
-   <li class='<%=reqHelper.getAction()==4 ? "active " : ""%>has-sub'><a href='#'><span><%=RB.getString("menu.downloads") %></span></a>
-     <ul>
-      <%
-		if(reqHelper.getListaMarcas()!=null){%>
-			
-		<%for (int x=0;x<reqHelper.getListaMarcas().size();x++){
-			Marca marca=(Marca)reqHelper.getListaMarcas().get(x);
-			
-		%>
-		<li class='has-sub'><a href='#'><span><%=marca.getTitulo() %></span></a>
-		<%
-		if(reqHelper.getListaModelos()!=null){
-			%><ul><%
-			for (int y=0;y<reqHelper.getListaModelos().size();y++){
-				Modelo modelo=(Modelo)reqHelper.getListaModelos().get(y);
-				if(modelo.getIdmarca()==marca.getIdmarca()){
-			%>
-			<li><a href='ControlServlet?action=4&detalle=<%=modelo.getIdmarca() %>&subDetalle=<%=modelo.getIdmodelo() %>'><span><%=modelo.getTitulo() %></span></a></li>
-			<%}
-			}
-			}
-		%></ul><%
-		}
-		}%>
-  
-      </ul>
-   </li>
+   <li class='<%=reqHelper.getAction()==4 ? "active " : ""%>'><a href='ControlServlet?action=4'><span><%=RB.getString("menu.downloads") %></span></a></li>
    
-   <li class='<%=reqHelper.getAction()==5 ? "active " : ""%>'><a href='http://foro.jiayu.es' target="_blank" ><span><%=RB.getString("menu.forum") %></span></a></li>
+   <li class='<%=reqHelper.getAction()==5 ? "active " : ""%>'><a href='http://datatecnologic.es/forotfandroid/index.php' target="_blank" ><span><%=RB.getString("menu.forum") %></span></a></li>
    <li class='<%=reqHelper.getAction()==6 ? "active " : ""%>'><a href='ControlServlet?action=6'><span><%=RB.getString("menu.staff") %></span></a></li>
    <li class='<%=reqHelper.getAction()==7 ? "active " : ""%> last'><a href='ControlServlet?action=7'><span><%=RB.getString("menu.contact") %></span></a></li>
    <li class='<%=reqHelper.getAction()==8 ? "active " : ""%> last'><a href='ControlServlet?action=8'><span><%=RB.getString("menu.reviews") %></span></a></li>

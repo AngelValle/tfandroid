@@ -49,42 +49,66 @@ public class AdminServlet extends HttpServlet {
 		RequestHelper reqHelper=null;
 	    HttpSession session=null;
 	    session=request.getSession(true);
+	    if(session.getAttribute("requestHelper")!=null){
+	    	reqHelper=(RequestHelper)session.getAttribute("requestHelper");
+    		if(reqHelper==null){
+    			reqHelper=new RequestHelper();
+    		}
+
+		}else{
+			reqHelper=new RequestHelper();
+			session=request.getSession(true);
+		}
+	    reqHelper.tratarRequest(request);
 		if(request.getParameter("user")!=null && request.getParameter("pass")!=null){
 			if("admin".equals(request.getParameter("user")) && "tfandroid".equals(request.getParameter("pass"))){				
 				session.setAttribute("admin", "1");
+				reqHelper.setJsp("admin.jsp");
+			}else{
+				reqHelper.setJsp("login.jsp");
 			}
+		}else{
+			reqHelper.setJsp("login.jsp");
 		}
 			    try {
 			    	if(session.getAttribute("admin")!=null){
-			    	if(session.getAttribute("requestHelper")!=null){
-			    		reqHelper=(RequestHelper)session.getAttribute("requestHelper");
-			    		if(reqHelper==null){
-			    			reqHelper=new RequestHelper();
-			    		}
-
-					}else{
-						reqHelper=new RequestHelper();
-						session=request.getSession(true);
-					}
-					reqHelper.tratarRequest(request);
+			    	
+					
 					tfandroidDAO tDao=new tfandroidDAO();
 					
 					
 					adminDAO aDao=new adminDAO();
 					
 					switch(reqHelper.getAction()){
+					case 0:
+						if(reqHelper.getSubaction()!=-1 && reqHelper.getSubaction()==1){
+							aDao.crearMarca(request.getParameter("nombre"));
+						}
+						reqHelper.setJsp("admin.jsp");
+						break;
 					case 1:
-						
-						aDao.crearMarca(request.getParameter("nombre"));
+						if(reqHelper.getSubaction()!=-1 && reqHelper.getSubaction()==1){
+							aDao.crearModelo(request.getParameter("nombre"),Integer.parseInt(request.getParameter("marca")));
+						}
+						reqHelper.setJsp("admin.jsp");
 						break;
 					case 2:
-						aDao.crearModelo(request.getParameter("nombre"),Integer.parseInt(request.getParameter("marca")));
+						if(reqHelper.getSubaction()!=-1 && reqHelper.getSubaction()==1){
+							aDao.crearNoticia(request.getParameter("titulo"),request.getParameter("descripcion"),request.getParameter("urlimagen"),request.getParameter("idioma"),Boolean.parseBoolean(request.getParameter("visible")));
+						}
+						reqHelper.setJsp("admin.jsp");
 						break;
 					case 3:
-						aDao.crearNoticia(request.getParameter("titulo"),request.getParameter("descripcion"),request.getParameter("urlimagen"),request.getParameter("idioma"),Boolean.parseBoolean(request.getParameter("visible")));
+						if(reqHelper.getSubaction()!=-1 && reqHelper.getSubaction()==1){
+							//aDao.crearNoticia(request.getParameter("titulo"),request.getParameter("descripcion"),request.getParameter("urlimagen"),request.getParameter("idioma"),Boolean.parseBoolean(request.getParameter("visible")));
+						}
+						reqHelper.setJsp("admin.jsp");
 						break;
 					case 4:
-						aDao.crearDescarga(Integer.parseInt(request.getParameter("marca")),Integer.parseInt(request.getParameter("modelo")),request.getParameter("titulo"),request.getParameter("descripcion"),request.getParameter("urlimagen"),request.getParameter("idioma"),Boolean.parseBoolean(request.getParameter("visible")));
+						if(reqHelper.getSubaction()!=-1 && reqHelper.getSubaction()==1){
+							aDao.crearDescarga(Integer.parseInt(request.getParameter("marca")),Integer.parseInt(request.getParameter("modelo")),request.getParameter("titulo"),request.getParameter("descripcion"),request.getParameter("urlimagen"),request.getParameter("idioma"),Boolean.parseBoolean(request.getParameter("visible")));
+						}
+						reqHelper.setJsp("admin.jsp");
 						break;
 					default:
 						break;
@@ -94,12 +118,12 @@ public class AdminServlet extends HttpServlet {
 					tDao.consultaNoticias("en");
 					reqHelper.setListaMarcas(tDao.consultaMarcas());
 					reqHelper.setListaModelos(tDao.consultaModelos());
-					reqHelper.setJsp("admin.jsp");
-					reqHelper.setAction(-1);
+					
+			    	}
+			    	
 					session.setAttribute("requestHelper",reqHelper);
 					RequestDispatcher rqDis=request.getRequestDispatcher(reqHelper.getJsp());
 					rqDis.forward(request, response);
-			    	}
 				}catch(Exception e){
 				}
 						
