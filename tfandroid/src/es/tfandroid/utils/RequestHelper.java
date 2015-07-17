@@ -8,19 +8,22 @@ import es.tfandroid.beans.Download;
 import es.tfandroid.beans.News;
 
 public class RequestHelper {
-int action=0;
+int action=1;
 int subaction=0;
-String subMenu="";
 String lang="es";
-String jsp="index.jsp";
+String jsp="about.jsp";
 int detalle=-1;
 int subDetalle=-1;
+int downloadId=-1;
 News noticiaActual=null;
 Download descargaActual=null;
+String txtSearch=null;
 ArrayList listaDescargas=null;
 ArrayList listaNews=null;
 ArrayList listaNewsCortas=null;
 ArrayList listaSearchs=null;
+ArrayList listaMarcas=null;
+ArrayList listaModelos=null;
 public RequestHelper() {
 	// TODO Auto-generated constructor stub
 }
@@ -39,9 +42,7 @@ public void tratarRequest(HttpServletRequest request) {
 		} catch (Exception e) {
 		}
 	}
-	if(request.getParameter("submenu")!=null){
-			setSubMenu((String)request.getParameter("submenu"));
-	}
+	
 	if(request.getParameter("language")!=null){
 		setLang((String)request.getParameter("language"));
 	}
@@ -63,8 +64,48 @@ public void tratarRequest(HttpServletRequest request) {
 	}else{
 		setSubDetalle(-1);
 	}
+	if(request.getParameter("downloadId")!=null){
+		String auxAct=(String)request.getParameter("downloadId");
+		try {
+			setDownloadId(Integer.parseInt(auxAct));
+		} catch (Exception e) {
+		}
+	}else{
+		setDownloadId(-1);
+	}
+	if(request.getParameter("textSearch")!=null){
+		String auxAct=(String)request.getParameter("textSearch");
+		setTxtSearch(("%"+auxAct+"%").replaceAll(" ", "%"));
+	}else{
+		setTxtSearch(null);
+	}
+	
 }
 
+public String getTxtSearch() {
+	return txtSearch;
+}
+public void setTxtSearch(String txtSearch) {
+	this.txtSearch = txtSearch;
+}
+public int getDownloadId() {
+	return downloadId;
+}
+public void setDownloadId(int downloadId) {
+	this.downloadId = downloadId;
+}
+public ArrayList getListaMarcas() {
+	return listaMarcas;
+}
+public void setListaMarcas(ArrayList listaMarcas) {
+	this.listaMarcas = listaMarcas;
+}
+public ArrayList getListaModelos() {
+	return listaModelos;
+}
+public void setListaModelos(ArrayList listaModelos) {
+	this.listaModelos = listaModelos;
+}
 public int getDetalle() {
 	return detalle;
 }
@@ -114,12 +155,7 @@ public ArrayList getListaSearchs() {
 public void setListaSearchs(ArrayList listaSearchs) {
 	this.listaSearchs = listaSearchs;
 }
-public String getSubMenu() {
-	return subMenu;
-}
-public void setSubMenu(String subMenu) {
-	this.subMenu = subMenu;
-}
+
 public int getSubaction() {
 	return subaction;
 }
